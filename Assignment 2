@@ -1,0 +1,98 @@
+
+  // LED Outputs
+ int LED1 = 3;
+ int LED2 = 4;
+ int LED3 = 5;
+ //Button input
+ int Butt1 = 8;
+ int Butt2 = 9;
+ int Butt3= 10;
+ int pot = A1;
+int buttonState1 = 0;
+int buttonState2 = 0;
+int buttonState3 = 0;
+int sensorValue = 0;
+
+
+void setup () {
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(8, INPUT);
+  pinMode(9, INPUT);
+  pinMode(10, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  
+  sensorValue = analogRead(pot);
+  int  speed = map(sensorValue, 0, 1024, 0, 10);
+  int  bright = map(sensorValue, 0, 1024, 0, 255);
+  buttonState1 = digitalRead(Butt1);
+  buttonState2 = digitalRead(Butt2);
+  buttonState3 = digitalRead(Butt3);
+  Serial.print("button state: ");
+  Serial.print(buttonState1);
+  Serial.print(buttonState2);
+  Serial.print(buttonState3);
+  Serial.print(", Sensor value: ");
+  Serial.print(sensorValue);
+  Serial.print(", speed: ");
+  Serial.println(speed);
+
+
+  if (buttonState1 == HIGH){
+    analogWrite(LED1, 255);
+    delay (speed*10);
+    analogWrite(LED1, 0);
+    delay (speed*20);
+    analogWrite(LED2, 0);
+    delay (speed*20);
+    analogWrite(LED2, 255);
+    delay (speed*10);
+    analogWrite(LED3, 255);
+    delay(speed*20);
+    analogWrite(LED3, 0);
+    delay(speed*10);
+  }else {
+    analogWrite(LED1, 0);
+    analogWrite(LED2, 0);
+    analogWrite(LED3, 0);
+ 
+  if (buttonState2 == HIGH){
+    for (int Fre = 0; Fre < 255; Fre = Fre + speed) {  
+     analogWrite(LED1, Fre);
+     analogWrite(LED2, Fre);
+     analogWrite(LED3, Fre);
+     delay(5);
+     }
+    for (int Fre = 255; Fre >0; Fre=Fre-speed) {  
+         analogWrite(LED1, Fre);
+         analogWrite(LED2, Fre);
+         analogWrite(LED3, Fre);
+         delay(5);  
+         } 
+    }else {
+       analogWrite(LED1, 0);
+       analogWrite(LED2, 0);
+       analogWrite(LED3, 0);
+       
+  if (buttonState3 == HIGH){
+    analogWrite(LED1, 255);
+    delay (speed*20);
+    analogWrite(LED1, 0);
+    delay (speed*15);
+    analogWrite(LED3, 255);
+    delay(speed*10);
+    analogWrite(LED3, 0);
+    delay(speed*5);
+     for (int Fre = 255; Fre >0; Fre=Fre-speed) {        
+         analogWrite(LED2, Fre);    
+         delay(5);
+     }  }else {
+    analogWrite(LED1, 0);
+    analogWrite(LED2, 0);
+    analogWrite(LED3, 0);
+   }}}
+ }
